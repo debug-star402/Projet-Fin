@@ -130,24 +130,21 @@ function voteCandidat(candidats){
             }
         }
     }
-    let i;
     let bool = true;
-    do {
-        identifiant = p("Saisir le CIN du candidat: ")
-        for (i = 0; i < candidats.length; i++){
-            if (identifiant == candidats[i].cin){
-                candidats[i].electeurs.push(cinCard);
-                console.clear()
-                return;
-            }
-            bool = false;
+    identifiant = p("Saisir le CIN du candidat: ")
+    for (i = 0; i < candidats.length; i++){
+        if (identifiant == candidats[i].cin){
+            candidats[i].electeurs.push(cinCard);
+            console.clear()
+            return;
         }
-        if (i == candidats.length){
-            console.log("Candidat introuvable...");
-            p("Ressayer...");
-            console.clear();
-        }
-    }while(bool == false)
+        bool = false;
+    }
+    if (bool == false){
+        console.log("-----------------------");
+        console.log("Candidat introuvable!");
+        console.log("-----------------------");
+    }
 }
 
 function modifierCandidats(candidats){
@@ -209,6 +206,10 @@ function rechercherCandidat(candidats){
         console.log("---------------------");
         return ;
     }
+}
+
+function statistiqueElection(candidats){
+
 }
 
 function electoralCandidats(arr){
