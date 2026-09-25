@@ -1,32 +1,5 @@
 let p = require("prompt-sync")();
-let candidats = [{ cin : "AB12356",
-    nom : "Boushaba",
-    prenom : "Soufiane",
-    partiPolitique : "viking",
-    age: 40,
-    electeurs: ["a","b","v","r"]
-    },
-    { cin : "AB23456",
-    nom : "boulama",
-    prenom : "Soufiane",
-    partiPolitique : "Indépendant",
-    age: 40,
-    electeurs: ["s","d","e"]
-    },
-      { cin : "AB13456",
-    nom : "Bouhafa",
-    prenom : "Soufiane",
-    partiPolitique : "viking",
-    age: 40,
-    electeurs: ["a","g","h","y","u","i","o"]
-    },
-        { cin : "AB12345",
-    nom : "Bokayo",
-    prenom : "Soufiane",
-    partiPolitique : "Indépendant",
-    age: 40,
-    electeurs: [1,2]
-    }]
+let candidats = [];
 let carteIdentiter;
 let candidatNom;
 let candidatPrenom;
@@ -37,6 +10,18 @@ let objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, part
 
 function AjouterCandidat(candidats){
     carteIdentiter = p("Saisir votre CIN: ");
+    let bool;
+    do {
+        bool = true
+        for (let i = 0; i < candidats.length; i++){
+            if (carteIdentiter == candidats[i].cin){
+                bool = false;
+                console.clear()
+            }
+        }
+        if (bool == false)
+            carteIdentiter = p("CIN deja utiliser. Veiller saisir un autre CIN: ");
+    } while (bool == false)
     candidatNom = p("Saisir votre Nom: ");
     candidatPrenom = p("Saisir votre prenom: ");
     partiPolitiqueCandidat = p("Saisir votre partis politique: ");
@@ -64,15 +49,15 @@ function afficherCandidat(objet){
 }
 
 function triVote(candidats){
-    objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
     let placeHolder;
-    for (let i = 0; i < candidats.length - 1; i++)
+    for (let i = 0; i < candidats.length - 1; i++){
         for (let j = i + 1; j < candidats.length; j++){
             if (candidats[i].electeurs.length < candidats[j].electeurs.length){
                 placeHolder = candidats[i];
                 candidats[i] = candidats[j];
                 candidats[j] = placeHolder;
             }
+        }
     }
     for (let i = 0; i < candidats.length; i++){
         console.log("")
@@ -80,6 +65,7 @@ function triVote(candidats){
         console.log("****************************************")
         console.log("")
         console.log(`# Candidat ${i+1}: `);
+        console.log("")
         afficherCandidat(candidats[i])
         console.log("")
         console.log("****************************************")
@@ -123,6 +109,10 @@ function voteCandidat(candidats){
     let identifiant;
     cinCard = p("Saisir votre CIN: ");
     for (let i = 0; i < candidats.length; i++){
+        if (cinCard == candidats[i].cin){
+            console.log("Vous avez déjà voté et vous n`avez pas le droit de modifier votre vote ni de voter à nouveau");
+            return;
+        }
         for(let j = 0; j < candidats[i].electeurs.length; j++){
             if (cinCard == candidats[i].electeurs[j]){
                 console.log("Vous avez déjà voté et vous n`avez pas le droit de modifier votre vote ni de voter à nouveau");
@@ -192,6 +182,7 @@ function rechercherCandidat(candidats){
             console.log("****************************************")
             console.log("")
             console.log(`# Candidat ${i+1}: `);
+            console.log("")
             afficherCandidat(candidats[i])
             console.log("")
             console.log("****************************************")
@@ -202,14 +193,63 @@ function rechercherCandidat(candidats){
     }
     if (bool == false){
         console.log("---------------------");
-        console.log("Candidat introuvable!")
+        console.log("Candidat introuvable!");
         console.log("---------------------");
         return ;
     }
 }
 
 function statistiqueElection(candidats){
-
+    console.log("2. Afficher le nombre total de votes exprimés dans toute l'élection.");
+    console.log("3. Afficher le Top 3 des candidats ayant le plus de votes.");
+    console.log("0. Retourner au menu principale.")
+    let choix = Number(p("Saisir votre choix: "));
+    while (choix < 0 || choix > 4){
+            console.clear();
+            choix = Number(p("Choix invalid. Veiller saisir le choix correct: "));
+        }
+    switch (choix){
+        case 1:
+            console.log(`Le nombre total des candidats est: ${candidats.length}`);
+            p("Continue....")
+            console.clear();
+            break;
+        case 2:
+            let res = 0;
+            for (let i = 0; i < candidats.length; i++){
+                for (let j = 0; j < candidats[i].electeurs.length; j++){
+                    res += 1;
+                }
+            }
+            console.log(`Le nombre total des votes est: ${res}`);
+            p("Continue....")
+            console.clear();
+            break;
+        case 3:
+            let placeHolder;
+            for (let i = 0; i < candidats.length - 1; i++){
+                for (let j = i + 1; j < candidats.length; j++){
+                    if (candidats[i].electeurs.length < candidats[j].electeurs.length){
+                        placeHolder = candidats[i];
+                        candidats[i] = candidats[j];
+                        candidats[j] = placeHolder;
+                    }
+                }
+            }
+            console.log("Top 3 candidats: ")
+            for (let i = 0; i < 3; i++){
+                console.log("----------------------------------------------------");
+                console.log("");
+                console.log(`${i + 1}. ${candidats[i].nom} ${candidats[i].prenom}: ${candidats[i].electeurs.length} votes.`);
+                console.log("")
+                console.log("----------------------------------------------------");
+            }
+            p("Continue....")
+            console.clear();
+            break;
+        case 0:
+            break;
+    }
 }
 
 function electoralCandidats(arr){
@@ -301,6 +341,11 @@ function electoralCandidats(arr){
                 break;
             case 7:
                 rechercherCandidat(arr);
+                p("Continue....");
+                console.clear();
+                break;
+            case 8:
+                statistiqueElection(arr);
                 p("Continue....");
                 console.clear();
                 break;
