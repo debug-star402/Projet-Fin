@@ -151,6 +151,23 @@ function voteCandidat(candidats){
     }while(bool == false)
 }
 
+function supprimerFunction(candidats){
+    let cinCard;
+    let bool = false;
+    cinCard = p("Saisir le CIN du candidats: ");
+    for (let i = 0; i < candidats.length; i++){
+        if (cinCard == candidats[i].cin){
+            candidats.splice(i, 1);
+            console.clear();
+            bool = true;
+        }
+    }
+    if (bool == false){
+        p("Candidat introuvable. ")
+        return;
+    }
+}
+
 function electoralCandidats(arr){
     let choix;
     do {
@@ -224,7 +241,12 @@ function electoralCandidats(arr){
             }
                 break;
             case 4:
-                voteCandidat(arr)
+                voteCandidat(arr);
+                p("Continue....");
+                console.clear();
+                break;
+            case 6:
+                supprimerFunction(arr);
                 p("Continue....");
                 console.clear();
                 break;
