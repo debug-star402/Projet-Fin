@@ -1,50 +1,122 @@
 let p = require("prompt-sync")();
-let arr = [];
+let candidats = [{ cin : "AB123456",
+    nom : "Boushaba",
+    prenom : "Soufiane",
+    partiPolitique : "viking",
+    age: 40,
+    electeurs: ["a","b","b","v","r"]
+    },
+    { cin : "AB123456",
+    nom : "boulama",
+    prenom : "Soufiane",
+    partiPolitique : "Indépendant",
+    age: 40,
+    electeurs: ["s","d","e","e"]
+    },
+      { cin : "AB123456",
+    nom : "Bouhafa",
+    prenom : "Soufiane",
+    partiPolitique : "viking",
+    age: 40,
+    electeurs: ["a","g","h","y","u","i","o"]
+    },
+        { cin : "AB123456",
+    nom : "Bokayo",
+    prenom : "Soufiane",
+    partiPolitique : "Indépendant",
+    age: 40,
+    electeurs: [1,2]
+    }]
 let carteIdentiter;
 let candidatNom;
 let candidatPrenom;
 let partiPolitiqueCandidat;
 let candidatAge;
 let electeurCandidat = [];
-let objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partipolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
+let objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
 
-function AjouterCandidat(arr){
+function AjouterCandidat(candidats){
     carteIdentiter = p("Saisir votre CIN: ");
     candidatNom = p("Saisir votre Nom: ");
     candidatPrenom = p("Saisir votre prenom: ");
     partiPolitiqueCandidat = p("Saisir votre partis politique: ");
     candidatAge = Number(p("Saisir votre age: "));
     electeurCandidat = [];
-    objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partipolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
-    arr.push(objet);
+    objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
+    candidats.push(objet);
 }
 
-function afficherCandidat(arr){
-    for (let i = 0; i < arr.length; i++){
+function afficherCandidat(objet){
+    for (let obj in objet){
+        if (obj == "cin")
+            console.log(`CIN: ${objet.cin}`);
+        else if (obj == "nom")
+            console.log(`Nom: ${objet.nom}`);
+        else if (obj == "prenom")
+            console.log(`Prenom: ${objet.prenom}`);
+        else if (obj == "partiPolitique")
+            console.log(`Parti Politique: ${objet.partiPolitique}`);
+        else if (obj == "age")
+            console.log(`Age: ${objet.age}`);
+        else
+            console.log(`Electeurs: ${objet.electeurs}`);
+    }
+}
+
+function triVote(candidats){
+    objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
+    let placeHolder;
+    for (let i = 0; i < candidats.length - 1; i++)
+        for (let j = i + 1; j < candidats.length; j++){
+            if (candidats[i].electeurs.length < candidats[j].electeurs.length){
+                placeHolder = candidats[i];
+                candidats[i] = candidats[j];
+                candidats[j] = placeHolder;
+            }
+    }
+    for (let i = 0; i < candidats.length; i++){
         console.log("")
         console.log("****************************************")
         console.log("****************************************")
         console.log("")
         console.log(`# Candidat ${i+1}: `);
-        for (let obj in arr[i]){
-            if (obj == "cin")
-                console.log(`CIN: ${arr[i].cin}`);
-            else if (obj == "nom")
-                console.log(`Nom: ${arr[i].nom}`);
-            else if (obj == "prenom")
-                console.log(`Prenom: ${arr[i].prenom}`);
-            else if (obj == "partipolitique")
-                console.log(`Parti Politique: ${arr[i].partipolitique}`);
-            else if (obj == "age")
-                console.log(`Age: ${arr[i].age}`);
-            else
-                console.log(`Electeurs: ${arr[i].electeurs}`);
-        }
+        afficherCandidat(candidats[i])
         console.log("")
         console.log("****************************************")
         console.log("****************************************")
         console.log("")
     }
+}
+
+function filtrerParti(arr){
+    objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
+    let choix = p("Saisir le nom de la parti politique: ");
+    let choixExist = false;
+    console.clear()
+    for (let i = 0; i < arr.length; i++){
+        if (choix == arr[i].partiPolitique){
+            choixExist = true;
+        }
+    }
+    if (choixExist == true){
+        for (i = 0; i < arr.length; i++){
+            if (choix == arr[i].partiPolitique){
+                console.log("")
+                console.log("****************************************")
+                console.log("****************************************")
+                console.log("")
+                console.log(`# Candidat ${i+1}: `);
+                console.log("")
+                afficherCandidat(arr[i])
+                console.log("")
+                console.log("****************************************")
+                console.log("****************************************")
+                console.log("")
+            }
+        }
+    }
+    else
+        console.log("Parti politique non trouver.")
 }
 
 function electoralCandidats(arr){
@@ -66,7 +138,7 @@ function electoralCandidats(arr){
         choix = Number(p("Saisir votre choix: "));
         while (choix < 0 || choix > 8){
             console.clear();
-            choix = Number(p("Choix invalid. Veiller saisir un nombre correspendant: "));
+            choix = Number(p("Choix invalid. Veiller saisir le choix correct: "));
         }
         console.clear()
         switch (choix){
@@ -78,23 +150,50 @@ function electoralCandidats(arr){
         case 2:
             AjouterCandidat(arr);
             console.clear()
-            choix = p("Voulez vous ajouter un autre candidat ?")
+            choix = p("Voulez vous ajouter un autre candidat ? (oui ou non)       ")
             console.clear
             while (choix == "oui"){
                 AjouterCandidat(arr);
-                choix = p("Voulez vous ajouter un autre candidat ?");
+                choix = p("Voulez vous ajouter un autre candidat ? ");
                 console.clear()
             }
             p("Continue....")
             console.clear();
             break;
         case 3:
-            afficherCandidat(arr);
-            p("Continue....")
-            console.clear();
-            break;
+            console.log("")
+            console.log("===================================")
+            console.log("1. Affichage par tri de vote: ")
+            console.log("2. Affichage par parti politique: ")
+            console.log("0. Retourner au menu precedente: ");
+            console.log("===================================")
+            console.log("")
+            let choixAffichage = Number(p("Choisir le type d'affichage: "))
+            while (choixAffichage < 0 || choixAffichage > 2){
+                console.clear();
+                choixAffichage = Number(p("Choix invalid. Veiller saisir le choix correct: "));
+            }
+            console.clear()
+            switch (choixAffichage){
+                case 1:
+                    triVote(arr);
+                    p("Continue....");
+                    console.clear();
+                    break;
+                case 2:
+                    filtrerParti(arr);
+                    p("Continue....");
+                    console.clear();
+                    break;
+                case 0:
+                    p("Continue....");
+                    console.clear();
+                    break;
+            }
+                break;
+            case 4:
         }
     } while (choix != 0);
 }
 
-electoralCandidats(arr);
+electoralCandidats(candidats);
