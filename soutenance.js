@@ -1,26 +1,26 @@
 let p = require("prompt-sync")();
-let candidats = [{ cin : "AB123456",
+let candidats = [{ cin : "AB12356",
     nom : "Boushaba",
     prenom : "Soufiane",
     partiPolitique : "viking",
     age: 40,
-    electeurs: ["a","b","b","v","r"]
+    electeurs: ["a","b","v","r"]
     },
-    { cin : "AB123456",
+    { cin : "AB23456",
     nom : "boulama",
     prenom : "Soufiane",
     partiPolitique : "Indépendant",
     age: 40,
-    electeurs: ["s","d","e","e"]
+    electeurs: ["s","d","e"]
     },
-      { cin : "AB123456",
+      { cin : "AB13456",
     nom : "Bouhafa",
     prenom : "Soufiane",
     partiPolitique : "viking",
     age: 40,
     electeurs: ["a","g","h","y","u","i","o"]
     },
-        { cin : "AB123456",
+        { cin : "AB12345",
     nom : "Bokayo",
     prenom : "Soufiane",
     partiPolitique : "Indépendant",
@@ -89,7 +89,7 @@ function triVote(candidats){
 }
 
 function filtrerParti(arr){
-    objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
+    arr = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
     let choix = p("Saisir le nom de la parti politique: ");
     let choixExist = false;
     console.clear()
@@ -117,6 +117,38 @@ function filtrerParti(arr){
     }
     else
         console.log("Parti politique non trouver.")
+}
+
+function voteCandidat(candidats){
+    let cinCard;
+    let identifiant;
+    cinCard = p("Saisir votre CIN: ");
+    for (let i = 0; i < candidats.length; i++){
+        for(let j = 0; j < candidats[i].electeurs.length; j++){
+            if (cinCard == candidats[i].electeurs[j]){
+                console.log("Vous avez déjà voté et vous n`avez pas le droit de modifier votre vote ni de voter à nouveau");
+                return;
+            }
+        }
+    }
+    let i;
+    let bool = true;
+    do {
+        identifiant = p("Saisir le CIN du candidat: ")
+        for (i = 0; i < candidats.length; i++){
+            if (identifiant == candidats[i].cin){
+                candidats[i].electeurs.push(cinCard);
+                console.clear()
+                return;
+            }
+            bool = false;
+        }
+        if (i == candidats.length){
+            console.log("Candidat introuvable...");
+            p("Ressayer...");
+            console.clear();
+        }
+    }while(bool == false)
 }
 
 function electoralCandidats(arr){
@@ -192,6 +224,10 @@ function electoralCandidats(arr){
             }
                 break;
             case 4:
+                voteCandidat(arr)
+                p("Continue....");
+                console.clear();
+                break;
         }
     } while (choix != 0);
 }
