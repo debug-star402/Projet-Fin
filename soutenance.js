@@ -89,7 +89,6 @@ function triVote(candidats){
 }
 
 function filtrerParti(arr){
-    arr = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
     let choix = p("Saisir le nom de la parti politique: ");
     let choixExist = false;
     console.clear()
@@ -149,6 +148,24 @@ function voteCandidat(candidats){
             console.clear();
         }
     }while(bool == false)
+}
+
+function modifierCandidats(candidats){
+    let cinCard;
+    let bool = false;
+    cinCard = p("Saisir le CIN du candidats: ");
+    for (let i = 0; i < candidats.length; i++){
+        if (cinCard == candidats[i].cin){
+            candidats[i].age = Number(p("Saisir age modification: "));
+            candidats[i].partiPolitique = p("Saisir parti politique modification: ");
+            console.clear();
+            bool = true;
+        }
+    }
+    if (bool == false){
+        p("Candidat introuvable. ")
+        return;
+    }
 }
 
 function supprimerFunction(candidats){
@@ -242,6 +259,11 @@ function electoralCandidats(arr){
                 break;
             case 4:
                 voteCandidat(arr);
+                p("Continue....");
+                console.clear();
+                break;
+            case 5:
+                modifierCandidats(arr);
                 p("Continue....");
                 console.clear();
                 break;
