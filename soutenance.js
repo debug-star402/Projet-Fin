@@ -180,8 +180,34 @@ function supprimerFunction(candidats){
         }
     }
     if (bool == false){
-        p("Candidat introuvable. ")
+        p("Candidat introuvable!")
         return;
+    }
+}
+
+function rechercherCandidat(candidats){
+    let candidatNom = p("Saisir le nom du candidat: ")
+    let bool = false;
+    for (let i = 0; i < candidats.length; i++){
+        if (candidatNom == candidats[i].nom){
+            console.log("")
+            console.log("****************************************")
+            console.log("****************************************")
+            console.log("")
+            console.log(`# Candidat ${i+1}: `);
+            afficherCandidat(candidats[i])
+            console.log("")
+            console.log("****************************************")
+            console.log("****************************************")
+            console.log("")
+            bool = true;
+        }
+    }
+    if (bool == false){
+        console.log("---------------------");
+        console.log("Candidat introuvable!")
+        console.log("---------------------");
+        return ;
     }
 }
 
@@ -269,6 +295,11 @@ function electoralCandidats(arr){
                 break;
             case 6:
                 supprimerFunction(arr);
+                p("Continue....");
+                console.clear();
+                break;
+            case 7:
+                rechercherCandidat(arr);
                 p("Continue....");
                 console.clear();
                 break;
