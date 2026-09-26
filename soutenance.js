@@ -43,7 +43,7 @@ let candidatAge;
 let electeurCandidat = [];
 let objet;
 
-function AjouterCandidat(candidats){
+function AjouterCandidat(){
     carteIdentiter = p("Saisir votre CIN: ");
     let bool;
 
@@ -88,7 +88,7 @@ function afficherCandidat(objet){
     }
 }
 
-function triVote(candidats){
+function triVote(){
     let placeHolder;
     for (let i = 0; i < candidats.length - 1; i++){
         for (let j = i + 1; j < candidats.length; j++){
@@ -114,7 +114,7 @@ function triVote(candidats){
     }
 }
 
-function filtrerParti(candidats){
+function filtrerParti(){
     let choix = p("Saisir le nom de la parti politique: ");
     let choixExist = false;
     console.clear()
@@ -144,7 +144,7 @@ function filtrerParti(candidats){
         console.log("Parti politique non trouver.")
 }
 
-function voteCandidat(candidats){
+function voteCandidat(){
     let cinCard;
     let identifiant;
     cinCard = p("Saisir votre CIN: ");
@@ -177,7 +177,7 @@ function voteCandidat(candidats){
     }
 }
 
-function modifierCandidats(candidats){
+function modifierCandidats(){
     let cinCard;
     let bool = false;
     cinCard = p("Saisir le CIN du candidats: ");
@@ -195,7 +195,7 @@ function modifierCandidats(candidats){
     }
 }
     
-function supprimerFunction(candidats){
+function supprimerFunction(){
     let cinCard;
     let bool = false;
     cinCard = p("Saisir le CIN du candidats: ");
@@ -212,11 +212,11 @@ function supprimerFunction(candidats){
     }
 }
 
-function rechercherCandidat(candidats){
+function rechercherCandidat(){
     let candidatNom = p("Saisir le nom du candidat: ")
     let bool = false;
     for (let i = 0; i < candidats.length; i++){
-        if (candidatNom == candidats[i].nom){
+        if (candidatNom.toLocaleLowerCase() == candidats[i].nom.toLocaleLowerCase()){
             console.log("")
             console.log("****************************************")
             console.log("****************************************")
@@ -239,25 +239,15 @@ function rechercherCandidat(candidats){
     }
 }
 
-function afficherTop3(objet){
-    for (let obj in objet){
-        if (obj == "nom")
-            console.log(`Nom: ${objet.nom}`);
-        else if (obj == "prenom")
-            console.log(`Prenom: ${objet.prenom}`);
-        else if (obj == "electeurs")
-            console.log(`Electeurs: ${objet.electeurs.length}`);
-    }
-}
-
-function candidatParParti(candidats){
+function candidatParParti(){
     let candidatArr = [];
     let count = 0;
+    console.log("Candidats par parti :")
     for (let i = 0; i < candidats.length; i++)
         candidatArr.push(candidats[i].partiPolitique);
     for (let i = 0; i < candidatArr.length - 1; i++){
-        for (let j = i + 1; j < candidatArr.length; j++){
-            if (candidatArr[i] == candidatArr[j])
+        for (let j = 0; j < candidatArr.length; j++){
+            if (candidatArr[i] == candidatArr[j] && i != j)
                 candidatArr.splice(j, 1);
         }
     }
@@ -266,12 +256,12 @@ function candidatParParti(candidats){
             if (candidatArr[i] == candidats[j].partiPolitique)
                 count++;
         }
-        console.log(`${candidatArr[i]}: ${count} candidats.`)
+        console.log(`${candidatArr[i]} : ${count}`);
         count = 0;
     }
 }
 
-function statistiqueElection(candidats){
+function statistiqueElection(){
     console.log("1. Afficher le nombre total de candidats.")
     console.log("2. Afficher le nombre total de votes exprimés dans toute l'élection.");
     console.log("3. Afficher le Top 3 des candidats ayant le plus de votes.");
@@ -289,13 +279,10 @@ function statistiqueElection(candidats){
             console.clear();
             break;
         case 2:
-            let res = 0;
-            for (let i = 0; i < candidats.length; i++){
-                for (let j = 0; j < candidats[i].electeurs.length; j++){
-                    res += 1;
-                }
-            }
-            console.log(`Le nombre total des votes est: ${res}`);
+            let totalVotes = 0;
+            for (let i = 0; i < candidats.length; i++)
+                totalVotes += candidats[i].electeurs.length;
+            console.log(`Le nombre total des votes est: ${totalVotes}`);
             p("Continue....")
             console.clear();
             break;
@@ -310,17 +297,17 @@ function statistiqueElection(candidats){
                     }
                 }
             }
-            console.log("Top 3 candidats: ")
+            console.log("Top 3 :");
             for (let i = 0; i < 3; i++){
-                console.log("");
-                afficherTop3(candidats[i]);
-                console.log("")
+                if (i >= candidats.length)
+                    return;
+                console.log(`${i+1}. ${candidats[i].prenom} ${candidats[i].nom} - ${candidats[i].electeurs.length} votes`)
             }
             p("Continue....")
             console.clear();
             break;
         case 4:
-            candidatParParti(candidats);
+            candidatParParti();
             p("Continue....")
             console.clear();
             break;
@@ -329,7 +316,7 @@ function statistiqueElection(candidats){
     }
 }
 
-function electoralCandidats(candidats){
+function electoralCandidats(){
     let choix;
     do {
         console.log("______Menu: _____________________________________")
@@ -355,17 +342,17 @@ function electoralCandidats(candidats){
         console.clear()
         switch (choix){
         case 1:
-            AjouterCandidat(candidats);
+            AjouterCandidat();
             p("Continue....")
             console.clear();
             break;
         case 2:
-            AjouterCandidat(candidats);
+            AjouterCandidat();
             console.clear()
             choix = p("Voulez vous ajouter un autre candidat ? (oui ou non)       ")
             console.clear
             while (choix == "oui"){
-                AjouterCandidat(candidats);
+                AjouterCandidat();
                 choix = p("Voulez vous ajouter un autre candidat ? (oui ou non)       ");
                 console.clear()
             }
@@ -388,12 +375,12 @@ function electoralCandidats(candidats){
             console.clear()
             switch (choixAffichage){
                 case 1:
-                    triVote(candidats);
+                    triVote();
                     p("Continue....");
                     console.clear();
                     break;
                 case 2:
-                    filtrerParti(candidats);
+                    filtrerParti();
                     p("Continue....");
                     console.clear();
                     break;
@@ -404,28 +391,27 @@ function electoralCandidats(candidats){
             }
                 break;
             case 4:
-                voteCandidat(candidats);
+                voteCandidat();
                 p("Continue....");
                 console.clear();
                 break;
             case 5:
-                modifierCandidats(candidats);
+                modifierCandidats();
                 p("Continue....");
                 console.clear();
                 break;
             case 6:
-                supprimerFunction(candidats);
+                supprimerFunction();
                 p("Continue....");
                 console.clear();
                 break;
             case 7:
-                rechercherCandidat(candidats);
+                rechercherCandidat();
                 p("Continue....");
                 console.clear();
                 break;
             case 8:
-                statistiqueElection(candidats);
-                p("Continue....");
+                statistiqueElection();
                 console.clear();
                 break;
         }
