@@ -110,7 +110,7 @@ function voteCandidat(candidats){
     cinCard = p("Saisir votre CIN: ");
     for (let i = 0; i < candidats.length; i++){
         if (cinCard == candidats[i].cin){
-            console.log("Vous avez déjà voté et vous n`avez pas le droit de modifier votre vote ni de voter à nouveau");
+            console.log("Ce CIN est deja utilise par un candidat.");
             return;
         }
         for(let j = 0; j < candidats[i].electeurs.length; j++){
@@ -199,7 +199,19 @@ function rechercherCandidat(candidats){
     }
 }
 
+function afficherTop3(objet){
+    for (let obj in objet){
+        if (obj == "nom")
+            console.log(`Nom: ${objet.nom}`);
+        else if (obj == "prenom")
+            console.log(`Prenom: ${objet.prenom}`);
+        else
+            console.log(`Electeurs: ${objet.electeurs.length}`);
+    }
+}
+
 function statistiqueElection(candidats){
+    console.log("1. Afficher le nombre total de candidats.")
     console.log("2. Afficher le nombre total de votes exprimés dans toute l'élection.");
     console.log("3. Afficher le Top 3 des candidats ayant le plus de votes.");
     console.log("0. Retourner au menu principale.")
@@ -238,11 +250,9 @@ function statistiqueElection(candidats){
             }
             console.log("Top 3 candidats: ")
             for (let i = 0; i < 3; i++){
-                console.log("----------------------------------------------------");
                 console.log("");
-                console.log(`${i + 1}. ${candidats[i].nom} ${candidats[i].prenom}: ${candidats[i].electeurs.length} votes.`);
+                afficherTop3(candidats[i]);
                 console.log("")
-                console.log("----------------------------------------------------");
             }
             p("Continue....")
             console.clear();
