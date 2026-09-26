@@ -1,27 +1,67 @@
 let p = require("prompt-sync")();
-let candidats = [];
+let candidats = [{
+    cin: 'AC123456',
+    nom: 'Bouhafa',
+    prenom: 'Soufiane',
+    partiPolitique: 'Indépendant',
+    age: 40,
+    electeurs: [
+      'a', 'g', 'h',
+      'y', 'u', 'i',
+      'o'
+    ]
+  },
+  {
+    cin: 'AA123456',
+    nom: 'Boushaba',
+    prenom: 'Soufiane',
+    partiPolitique: 'Independant',
+    age: 40,
+    electeurs: [ 'a', 'b', 'b', 'v', 'r' ]
+  },
+  {
+    cin: 'AB123456',
+    nom: 'boulama',
+    prenom: 'Soufiane',
+    partiPolitique: 'pam',
+    age: 40,
+    electeurs: [ 's', 'd', 'e', 'e' ]
+  },
+  {
+    cin: 'AD123456',
+    nom: 'Bokayo',
+    prenom: 'Soufiane',
+    partiPolitique: 'pam',
+    age: 40,
+    electeurs: [ 1, 2 ]
+  }];
 let carteIdentiter;
 let candidatNom;
 let candidatPrenom;
 let partiPolitiqueCandidat;
 let candidatAge;
 let electeurCandidat = [];
-let objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
+let objet;
 
 function AjouterCandidat(candidats){
     carteIdentiter = p("Saisir votre CIN: ");
     let bool;
+
     do {
         bool = true
-        for (let i = 0; i < candidats.length; i++){
-            if (carteIdentiter == candidats[i].cin){
+        for (let i = 0; i < candidats.length; i++)
+        {
+            if (carteIdentiter == candidats[i].cin)
+            {
                 bool = false;
                 console.clear()
             }
         }
         if (bool == false)
             carteIdentiter = p("CIN deja utiliser. Veiller saisir un autre CIN: ");
+
     } while (bool == false)
+
     candidatNom = p("Saisir votre Nom: ");
     candidatPrenom = p("Saisir votre prenom: ");
     partiPolitiqueCandidat = p("Saisir votre partis politique: ");
@@ -74,25 +114,25 @@ function triVote(candidats){
     }
 }
 
-function filtrerParti(arr){
+function filtrerParti(candidats){
     let choix = p("Saisir le nom de la parti politique: ");
     let choixExist = false;
     console.clear()
-    for (let i = 0; i < arr.length; i++){
-        if (choix == arr[i].partiPolitique){
+    for (let i = 0; i < candidats.length; i++){
+        if (choix == candidats[i].partiPolitique){
             choixExist = true;
         }
     }
     if (choixExist == true){
-        for (i = 0; i < arr.length; i++){
-            if (choix == arr[i].partiPolitique){
+        for (i = 0; i < candidats.length; i++){
+            if (choix == candidats[i].partiPolitique){
                 console.log("")
                 console.log("****************************************")
                 console.log("****************************************")
                 console.log("")
                 console.log(`# Candidat ${i+1}: `);
                 console.log("")
-                afficherCandidat(arr[i])
+                afficherCandidat(candidats[i])
                 console.log("")
                 console.log("****************************************")
                 console.log("****************************************")
@@ -154,7 +194,7 @@ function modifierCandidats(candidats){
         return;
     }
 }
-
+    
 function supprimerFunction(candidats){
     let cinCard;
     let bool = false;
@@ -205,8 +245,29 @@ function afficherTop3(objet){
             console.log(`Nom: ${objet.nom}`);
         else if (obj == "prenom")
             console.log(`Prenom: ${objet.prenom}`);
-        else
+        else if (obj == "electeurs")
             console.log(`Electeurs: ${objet.electeurs.length}`);
+    }
+}
+
+function candidatParParti(candidats){
+    let candidatArr = [];
+    let count = 0;
+    for (let i = 0; i < candidats.length; i++)
+        candidatArr.push(candidats[i].partiPolitique);
+    for (let i = 0; i < candidatArr.length - 1; i++){
+        for (let j = i + 1; j < candidatArr.length; j++){
+            if (candidatArr[i] == candidatArr[j])
+                candidatArr.splice(j, 1);
+        }
+    }
+    for (let i = 0; i < candidatArr.length; i++){
+        for (let j = 0; j < candidats.length; j++){
+            if (candidatArr[i] == candidats[j].partiPolitique)
+                count++;
+        }
+        console.log(`${candidatArr[i]}: ${count} candidats.`)
+        count = 0;
     }
 }
 
@@ -214,6 +275,7 @@ function statistiqueElection(candidats){
     console.log("1. Afficher le nombre total de candidats.")
     console.log("2. Afficher le nombre total de votes exprimés dans toute l'élection.");
     console.log("3. Afficher le Top 3 des candidats ayant le plus de votes.");
+    console.log("4. Afficher le nombre de candidats par parti politique.")
     console.log("0. Retourner au menu principale.")
     let choix = Number(p("Saisir votre choix: "));
     while (choix < 0 || choix > 4){
@@ -257,12 +319,17 @@ function statistiqueElection(candidats){
             p("Continue....")
             console.clear();
             break;
+        case 4:
+            candidatParParti(candidats);
+            p("Continue....")
+            console.clear();
+            break;
         case 0:
             break;
     }
 }
 
-function electoralCandidats(arr){
+function electoralCandidats(candidats){
     let choix;
     do {
         console.log("______Menu: _____________________________________")
@@ -280,24 +347,26 @@ function electoralCandidats(arr){
 
         choix = Number(p("Saisir votre choix: "));
         while (choix < 0 || choix > 8){
-            console.clear();
-            choix = Number(p("Choix invalid. Veiller saisir le choix correct: "));
+            do {
+                console.clear();
+                choix = Number(p("Choix invalid. Veiller saisir le choix correct: "));
+            } while (choix < 0 || choix > 8)
         }
         console.clear()
         switch (choix){
         case 1:
-            AjouterCandidat(arr);
+            AjouterCandidat(candidats);
             p("Continue....")
             console.clear();
             break;
         case 2:
-            AjouterCandidat(arr);
+            AjouterCandidat(candidats);
             console.clear()
             choix = p("Voulez vous ajouter un autre candidat ? (oui ou non)       ")
             console.clear
             while (choix == "oui"){
-                AjouterCandidat(arr);
-                choix = p("Voulez vous ajouter un autre candidat ? ");
+                AjouterCandidat(candidats);
+                choix = p("Voulez vous ajouter un autre candidat ? (oui ou non)       ");
                 console.clear()
             }
             p("Continue....")
@@ -319,12 +388,12 @@ function electoralCandidats(arr){
             console.clear()
             switch (choixAffichage){
                 case 1:
-                    triVote(arr);
+                    triVote(candidats);
                     p("Continue....");
                     console.clear();
                     break;
                 case 2:
-                    filtrerParti(arr);
+                    filtrerParti(candidats);
                     p("Continue....");
                     console.clear();
                     break;
@@ -335,27 +404,27 @@ function electoralCandidats(arr){
             }
                 break;
             case 4:
-                voteCandidat(arr);
+                voteCandidat(candidats);
                 p("Continue....");
                 console.clear();
                 break;
             case 5:
-                modifierCandidats(arr);
+                modifierCandidats(candidats);
                 p("Continue....");
                 console.clear();
                 break;
             case 6:
-                supprimerFunction(arr);
+                supprimerFunction(candidats);
                 p("Continue....");
                 console.clear();
                 break;
             case 7:
-                rechercherCandidat(arr);
+                rechercherCandidat(candidats);
                 p("Continue....");
                 console.clear();
                 break;
             case 8:
-                statistiqueElection(arr);
+                statistiqueElection(candidats);
                 p("Continue....");
                 console.clear();
                 break;
