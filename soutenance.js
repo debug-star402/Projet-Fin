@@ -29,7 +29,7 @@ function AjouterCandidat(){
 
     candidatNom = p("Saisir votre Nom: ");
     candidatPrenom = p("Saisir votre prenom: ");
-    partiPolitiqueCandidat = p("Saisir votre partis politique: ");
+    partiPolitiqueCandidat = p("Saisir votre partis politique: ").toUpperCase();
     if (partiPolitiqueCandidat == undefined || partiPolitiqueCandidat == ""){
         partiPolitiqueCandidat = "Indépendant";
     }
