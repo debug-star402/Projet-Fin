@@ -1,5 +1,32 @@
 let p = require("prompt-sync")();
-let candidats = [];
+let candidats = [{ cin : "AB123456",
+    nom : "Boushaba",
+    prenom : "Soufiane",
+    partiPolitique : "Indépendant",
+    age: 40,
+    electeurs: ["a","b","b","v","r"]
+    },
+    { cin : "AB123456",
+    nom : "boulama",
+    prenom : "Soufiane",
+    partiPolitique : "Indépendant",
+    age: 40,
+    electeurs: ["s","d","e","e"]
+    },
+      { cin : "AB123456",
+    nom : "Bouhafa",
+    prenom : "Soufiane",
+    partiPolitique : "Indépendant",
+    age: 40,
+    electeurs: ["a","g","h","y","u","i","o"]
+    },
+        { cin : "AB123456",
+    nom : "Bokayo",
+    prenom : "Soufiane",
+    partiPolitique : "Indépendant",
+    age: 40,
+    electeurs: [1,2]
+    }];
 let carteIdentiter;
 let candidatNom;
 let candidatPrenom;
@@ -30,6 +57,9 @@ function AjouterCandidat(){
     candidatNom = p("Saisir votre Nom: ");
     candidatPrenom = p("Saisir votre prenom: ");
     partiPolitiqueCandidat = p("Saisir votre partis politique: ");
+    if (partiPolitiqueCandidat == undefined || partiPolitiqueCandidat == ""){
+        partiPolitiqueCandidat = "Indépendant";
+    }
     candidatAge = Number(p("Saisir votre age: "));
     electeurCandidat = [];
     objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
@@ -84,13 +114,13 @@ function filtrerParti(){
     let choixExist = false;
     console.clear()
     for (let i = 0; i < candidats.length; i++){
-        if (choix == candidats[i].partiPolitique){
+        if (choix.toUpperCase() == candidats[i].partiPolitique.toUpperCase()){
             choixExist = true;
         }
     }
     if (choixExist == true){
         for (i = 0; i < candidats.length; i++){
-            if (choix == candidats[i].partiPolitique){
+            if (choix.toUpperCase() == candidats[i].partiPolitique.toUpperCase()){
                 console.log("")
                 console.log("****************************************")
                 console.log("****************************************")
@@ -298,7 +328,7 @@ function electoralCandidats(){
         console.log("________________________________________________")
 
         choix = Number(p("Saisir votre choix: "));
-        while (choix < 0 || choix > 8){
+        if (choix < 0 || choix > 8){
             do {
                 console.clear();
                 choix = Number(p("Choix invalid. Veiller saisir le choix correct: "));
@@ -312,17 +342,16 @@ function electoralCandidats(){
             console.clear();
             break;
         case 2:
+            let choix_2
             AjouterCandidat();
             console.clear()
-            choix = p("Voulez vous ajouter un autre candidat ? (oui ou non)       ")
-            console.clear
-            while (choix == "oui"){
+            choix_2 = p("Voulez vous ajouter un autre candidat ? (oui ou non)       ")
+            console.clear()
+            while (choix_2.toLocaleLowerCase() == "oui"){
                 AjouterCandidat();
-                choix = p("Voulez vous ajouter un autre candidat ? (oui ou non)       ");
-                console.clear()
+                choix_2 = p("Voulez vous ajouter un autre candidat ? (oui ou non)       ")
             }
             p("Continue....")
-            console.clear();
             break;
         case 3:
             console.log("")
