@@ -1,32 +1,5 @@
 let p = require("prompt-sync")();
-let candidats = [{ cin : "AB123456",
-    nom : "Boushaba",
-    prenom : "Soufiane",
-    partiPolitique : "Indépendant",
-    age: 40,
-    electeurs: ["a","b","b","v","r"]
-    },
-    { cin : "AB123456",
-    nom : "boulama",
-    prenom : "Soufiane",
-    partiPolitique : "Indépendant",
-    age: 40,
-    electeurs: ["s","d","e","e"]
-    },
-      { cin : "AB123456",
-    nom : "Bouhafa",
-    prenom : "Soufiane",
-    partiPolitique : "Indépendant",
-    age: 40,
-    electeurs: ["a","g","h","y","u","i","o"]
-    },
-        { cin : "AB123456",
-    nom : "Bokayo",
-    prenom : "Soufiane",
-    partiPolitique : "Indépendant",
-    age: 40,
-    electeurs: [1,2]
-    }];
+let candidats = [];
 let carteIdentiter;
 let candidatNom;
 let candidatPrenom;
