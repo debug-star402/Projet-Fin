@@ -34,6 +34,12 @@ function AjouterCandidat(){
         partiPolitiqueCandidat = "Indépendant";
     }
     candidatAge = Number(p("Saisir votre age: "));
+    if (isNaN(candidatAge)){
+        do {
+            console.log("Age doit etre un nombre!");
+            candidatAge = Number(p("Saisir votre age: "));
+        }while (isNaN(candidatAge))
+    }
     electeurCandidat = [];
     objet = {cin: carteIdentiter, nom: candidatNom, prenom: candidatPrenom, partiPolitique: partiPolitiqueCandidat, age: candidatAge, electeurs: electeurCandidat};
     candidats.push(objet);
@@ -52,7 +58,7 @@ function afficherCandidat(objet){
         else if (obj == "age")
             console.log(`Age: ${objet.age}`);
         else
-            console.log(`Electeurs: ${objet.electeurs}`);
+            console.log(`Electeurs: ${objet.electeurs.length}`);
     }
 }
 
@@ -152,7 +158,16 @@ function modifierCandidats(){
     for (let i = 0; i < candidats.length; i++){
         if (cinCard == candidats[i].cin){
             candidats[i].age = Number(p("Saisir age modification: "));
+            if (isNaN(candidats[i].age)){
+                do {
+                    console.log("Age doit etre un nombre!");
+                    candidats[i].age = Number(p("Saisir votre age: "));
+                }while (isNaN(candidats[i].age))
+            }
             candidats[i].partiPolitique = p("Saisir parti politique modification: ");
+            if (candidats[i].partiPolitique == undefined || candidats[i].partiPolitique == ""){
+                candidats[i].partiPolitique = "Indépendant";
+            }
             console.clear();
             bool = true;
         }
@@ -268,7 +283,7 @@ function statistiqueElection(){
             console.log("Top 3 :");
             for (let i = 0; i < 3; i++){
                 if (i >= candidats.length)
-                    return;
+                    break;
                 console.log(`${i+1}. ${candidats[i].prenom} ${candidats[i].nom} - ${candidats[i].electeurs.length} votes`)
             }
             p("Continue....")
